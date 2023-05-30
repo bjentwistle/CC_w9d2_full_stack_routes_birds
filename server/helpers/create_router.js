@@ -1,5 +1,5 @@
 const express = require('express');
-const ObjectID = require('mongodb').ObjectID;
+const ObjectId = require('mongodb').ObjectId;
 
 const createRouter = function (collection) {
 
@@ -20,7 +20,7 @@ const createRouter = function (collection) {
   router.get('/:id', (req, res) => {
     const id = req.params.id;
     collection
-      .findOne({ _id: ObjectID(id) })
+      .findOne({ _id: new ObjectId(id) })
       .then((doc) => res.json(doc))
       .catch((err) => {
         console.error(err);
@@ -33,8 +33,10 @@ const createRouter = function (collection) {
     const newSighting = req.body
     collection.insertOne(newSighting)
     .then((result) => {
-      const myObjectId = result.insertedId.toString()
-      res.json(myObjectId)
+      const myObjectId = result.insertedId
+      collection
+        .findOne({ _id: myObjectId })
+        .then((doc) => res.json(doc))
     })
     .catch((err) => {
       console.error(err);
@@ -42,6 +44,18 @@ const createRouter = function (collection) {
       res.json({ status: 500, error: err });
     });
   })
+
+  router.delete('/:id', (req, res) => {
+    const id = req.params.id;
+    collection
+      .deleteOne({ _id: new ObjectId(id) })
+      .then((result) => res.json(result))
+      .catch((err) => {
+        console.error(err);
+        res.status(500);
+        res.json({ status: 500, error: err });
+      });
+  });
 
   return router;
 };

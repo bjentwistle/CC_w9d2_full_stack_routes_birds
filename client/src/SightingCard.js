@@ -2,9 +2,10 @@ import { deleteSighting } from "./SightingService"
 
 const SightingCard = ({sighting, removeSighting}) => {
 
-    console.log(sighting);
     const handleDelete = () => {
-        deleteSighting(sighting._id).then(()=>{
+        deleteSighting(sighting._id)
+        .then((res)=>{
+            console.log(res)  //can add an error check here. If statement....
             removeSighting(sighting._id);
         })
     }

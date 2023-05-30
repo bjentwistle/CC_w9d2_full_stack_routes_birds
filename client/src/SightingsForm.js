@@ -8,7 +8,7 @@ const SightingsForm = ({addSighting}) => {
         location: "",
         date: "",
     })
-
+   
     const onChange = (e) =>{
         const newFormData = Object.assign({}, formData);
         newFormData[e.target.name] = e.target.value;
@@ -19,13 +19,13 @@ const SightingsForm = ({addSighting}) => {
         e.preventDefault();
         postSighting(formData).then((data)=>{
             addSighting(data);
-            console.log(data)
+
         })
         // Reset the form input values
         setFormData({
             species: "",
             location: "",
-            date: "",
+            date: ""
         });
     }
 
